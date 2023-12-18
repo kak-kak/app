@@ -1,0 +1,18 @@
+FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-devel
+ARG GROUPNAME GID USERNAME UID        
+RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+WORKDIR /app
+
+RUN apt -y update && apt install -y sudo git vim curl wget
+
+COPY setupUserGroup.sh /app/setupUserGroup.sh
+RUN bash setupUserGroup.sh  ${UID} ${USERNAME} ${GID} ${GROUPNAME}
+RUN echo ${USERNAME}:password | chpasswd
+RUN apt -y update && apt install -y libopencv-dev
+# COPY requirements.txt /app/requirements.txt
+# RUN pip install -r requirements.txt
+
+
+
+
